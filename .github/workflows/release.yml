@@ -2,14 +2,16 @@ name: Release
 on:
   push:
     tags:
-      - 'v*' # Trigger on tags like v0.1.0
+      - 'v*'
 
 jobs:
   release:
+    permissions:
+      contents: write  # <--- THIS IS THE FIX. Allows uploading assets.
     strategy:
       fail-fast: false
       matrix:
-        platform: [windows-latest] # We only care about Windows for now
+        platform: [windows-latest]
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -22,7 +24,6 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
       - name: install dependencies (windows only)
         if: matrix.platform == 'windows-latest'
-        working-directory: tauri-app
         run: |
           npm install
       - name: Build the app
@@ -30,7 +31,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          projectPath: "./tauri-app"
           tagName: v__VERSION__ # the action automatically replaces this
           releaseName: 'Zcash Viewer v__VERSION__'
           releaseBody: 'See the assets to download this version and install.'
