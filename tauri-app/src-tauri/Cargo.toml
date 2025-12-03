@@ -1,0 +1,43 @@
+[package]
+name = "zcash-viewer"
+version = "0.1.0"
+description = "A friendly Zcash shielded viewer"
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2.0", features = [] }
+
+[dependencies]
+tauri = { version = "2.0", features = [] }
+tauri-plugin-opener = "2.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1", features = ["full"] }
+
+# --- CRASH FIX ---
+rustls = { version = "0.23", features = ["ring"] }
+
+# --- ZINGO STACK ---
+zingolib = { git = "https://github.com/zingolabs/zingolib", branch = "dev" }
+pepper-sync = { git = "https://github.com/zingolabs/zingolib", branch = "dev" }
+
+# --- DEPENDENCY ALIGNMENT ---
+# Relaxed pins to allow the Git Patch to take over
+zcash_protocol = "0.7"
+zcash_primitives = "0.26"
+
+# --- THE CORRECT PATCH LIST ---
+# These are the ONLY crates that exist in the librustzcash repo.
+# We patch them to force zebra-chain and zingolib to agree on versions.
+[patch.crates-io]
+zcash_address = { git = "https://github.com/zcash/librustzcash", rev = "3ba772c9b8"}
+zcash_client_backend = { git = "https://github.com/zcash/librustzcash", rev = "3ba772c9b8"}
+zcash_encoding = { git = "https://github.com/zcash/librustzcash", rev = "3ba772c9b8"}
+zcash_keys = { git = "https://github.com/zcash/librustzcash", rev = "3ba772c9b8"}
+zcash_primitives = { git = "https://github.com/zcash/librustzcash", rev = "3ba772c9b8"}
+zcash_proofs = { git = "https://github.com/zcash/librustzcash", rev = "3ba772c9b8"}
+zcash_protocol = { git = "https://github.com/zcash/librustzcash", rev = "3ba772c9b8"}
+zcash_transparent = { git = "https://github.com/zcash/librustzcash", rev = "3ba772c9b8"}
+zip321 = { git = "https://github.com/zcash/librustzcash", rev = "3ba772c9b8"}
+f4jumble = { git = "https://github.com/zcash/librustzcash", rev = "3ba772c9b8"}
+equihash = { git = "https://github.com/zcash/librustzcash", rev = "3ba772c9b8"}
