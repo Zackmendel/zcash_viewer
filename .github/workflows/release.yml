@@ -24,6 +24,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
       - name: install dependencies (windows only)
         if: matrix.platform == 'windows-latest'
+        working-directory: ./tauri-app # <--- CHANGED: Points to your subfolder
         run: |
           npm install
       - name: Build the app
@@ -36,3 +37,4 @@ jobs:
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true
           prerelease: false
+          projectPath: "./tauri-app" # <--- CHANGED: Tells Tauri where the code is
